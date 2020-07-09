@@ -1,6 +1,6 @@
 import arcade
 
-STARTING_SPEED = 1
+STARTING_SPEED = 2
 
 STARTING_X = 400
 STARTING_Y = 300
@@ -14,6 +14,10 @@ STARTING_DIRECTION_Y = NEUTRAL_DIRECTION
 
 
 class SnakeBodySegment:
+    """
+    TODO
+    """
+
     BODY_WIDTH = 10
     BODY_HEIGHT = 10
 
@@ -143,6 +147,10 @@ class SnakeBodySegment:
 
 
 class Snake:
+    """
+    TODO
+    """
+
     def __init__(self):
         self.head = SnakeBodySegment(
             STARTING_X,

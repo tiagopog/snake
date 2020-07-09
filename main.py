@@ -1,5 +1,7 @@
 import arcade
+
 from source.snake import Snake
+from source.food import Food
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -17,6 +19,7 @@ class MyGame(arcade.Window):
 
     def setup(self):
         self.snake = Snake()
+        self.food = Food()
 
     def on_draw(self):
         """
@@ -24,6 +27,7 @@ class MyGame(arcade.Window):
         """
         arcade.start_render()
         self.snake.draw()
+        self.food.draw()
 
     def on_key_press(self, key, modifiers):
         """
