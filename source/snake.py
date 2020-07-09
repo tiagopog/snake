@@ -56,35 +56,46 @@ class SnakeBodySegment:
             self.direction_y == NEUTRAL_DIRECTION
         )
 
-    def draw(self):
-        arcade.create_rectangle_filled(
-            center_x=self.x,
-            center_y=self.y,
-            width=self.BODY_WIDTH,
-            height=self.BODY_HEIGHT,
-            color=arcade.color.WHITE
-        ).draw()
-
     def move(self):
         self.x += self.direction_x * self.speed
         self.y += self.direction_y * self.speed
         self._check_turning_point()
 
     def turn_up(self):
+        if self.is_going_down:
+            return
+
         self.direction_x = NEUTRAL_DIRECTION
         self.direction_y = POSITIVE_DIRECTION
+        self.propagate_turning_point('up')
 
     def turn_down(self):
+        if self.is_going_up:
+            return
+
         self.direction_x = NEUTRAL_DIRECTION
         self.direction_y = NEGATIVE_DIRECTION
+        self.propagate_turning_point('down')
 
     def turn_left(self):
+        if self.is_going_right:
+            return
+
         self.direction_x = NEGATIVE_DIRECTION
         self.direction_y = NEUTRAL_DIRECTION
+        self.propagate_turning_point('left')
 
     def turn_right(self):
+        if self.is_going_left:
+            return
+
         self.direction_x = POSITIVE_DIRECTION
         self.direction_y = NEUTRAL_DIRECTION
+        self.propagate_turning_point('right')
+
+    def propagate_turning_point(self, direction):
+        if self.next:
+            self.next.turning_point = (self.x, self.y, direction)
 
     def grow(self):
         self.next = SnakeBodySegment(
@@ -95,9 +106,14 @@ class SnakeBodySegment:
             STARTING_SPEED
         )
 
-    def propagate_turning_point(self, direction):
-        if self.next:
-            self.next.turning_point = (self.x, self.y, direction)
+    def draw(self):
+        arcade.create_rectangle_filled(
+            center_x=self.x,
+            center_y=self.y,
+            width=self.BODY_WIDTH,
+            height=self.BODY_HEIGHT,
+            color=arcade.color.WHITE
+        ).draw()
 
     def _check_turning_point(self):
         if self.turning_point is None:
@@ -109,7 +125,6 @@ class SnakeBodySegment:
 
         if reached_x(target_x, target_direction) or reached_y(target_y, target_direction):
             getattr(self, f'turn_{target_direction}')()
-            self.propagate_turning_point(target_direction)
             self.turning_point = None
 
     def _has_reached_target_y(self, target_y, target_direction):
@@ -152,19 +167,15 @@ class Snake:
 
     def turn_up(self):
         self.head.turn_up()
-        self.head.propagate_turning_point('up')
 
     def turn_down(self):
         self.head.turn_down()
-        self.head.propagate_turning_point('down')
 
     def turn_left(self):
         self.head.turn_left()
-        self.head.propagate_turning_point('left')
 
     def turn_right(self):
         self.head.turn_right()
-        self.head.propagate_turning_point('right')
 
     def draw(self):
         segment = self.head
