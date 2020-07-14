@@ -33,6 +33,14 @@ class SnakeBodySegment:
         self.next = None
 
     @property
+    def width(self):
+        return self.BODY_WIDTH
+
+    @property
+    def height(self):
+        return self.BODY_HEIGHT
+
+    @property
     def is_going_up(self):
         return (
             self.direction_x == NEUTRAL_DIRECTION and

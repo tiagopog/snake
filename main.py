@@ -1,5 +1,6 @@
 import arcade
 
+from source import game
 from source.snake import Snake
 from source.food import Food
 
@@ -56,6 +57,8 @@ class MyGame(arcade.Window):
         All the logic to move, and the game logic goes here.
         """
         self.snake.move()
+        if game.has_collision_between(self.snake.head, self.food):
+            print("Snake has eaten the food!")
 
 
 def main():
