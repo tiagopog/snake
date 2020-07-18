@@ -14,8 +14,7 @@ class Food:
     """
 
     def __init__(self):
-        self.x = random.randint(0, MAX_X)
-        self.y = random.randint(0, MAX_Y)
+        self.reset_position()
 
     @property
     def width(self):
@@ -24,6 +23,10 @@ class Food:
     @property
     def height(self):
         return BODY_HEIGHT
+
+    def reset_position(self):
+        self.x = random.randint(0, MAX_X)
+        self.y = random.randint(0, MAX_Y)
 
     def draw(self):
         arcade.create_rectangle_filled(

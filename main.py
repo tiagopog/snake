@@ -1,6 +1,7 @@
 import arcade
 
 from source.game import Game
+from source.score import Score
 from source.snake import Snake
 from source.food import Food
 
@@ -25,6 +26,7 @@ class MyGame(arcade.Window):
         TODO
         """
         self.game = Game()
+        self.score = Score()
         self.snake = Snake()
         self.food = Food()
 
@@ -35,6 +37,7 @@ class MyGame(arcade.Window):
         arcade.start_render()
         self.snake.draw()
         self.food.draw()
+        self.score.draw(score=self.game.score)
 
     def on_key_press(self, key, modifiers):
         """
@@ -53,18 +56,22 @@ class MyGame(arcade.Window):
         """
         Called when the user releases a key.
         """
-        # pass
-        # if key == arcade.key.UP:
-        #     self.snake.change_y = 0
+        pass
 
+    def on_collision(self):
+        self.food.reset_position()
+        # TODO: self.snake.grow()
 
     def update(self, delta_time):
         """
         All the logic to move, and the game logic goes here.
         """
         self.snake.move()
-        self.game.check_collision_between(self.snake.head, self.food)
-
+        self.game.check_collision_between(
+            source=self.snake.head,
+            target=self.food,
+            on_collision=self.on_collision
+        )
 
 def main():
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)

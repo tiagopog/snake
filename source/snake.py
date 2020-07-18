@@ -1,16 +1,16 @@
 import arcade
 
-STARTING_SPEED = 2
+START_SPEED = 2
 
-STARTING_X = 400
-STARTING_Y = 300
+START_X = 400
+START_Y = 300
 
 POSITIVE_DIRECTION = 1
 NEGATIVE_DIRECTION = -1
 NEUTRAL_DIRECTION = 0
 
-STARTING_DIRECTION_X = POSITIVE_DIRECTION
-STARTING_DIRECTION_Y = NEUTRAL_DIRECTION
+START_DIRECTION_X = POSITIVE_DIRECTION
+START_DIRECTION_Y = NEUTRAL_DIRECTION
 
 
 class SnakeBodySegment:
@@ -111,11 +111,11 @@ class SnakeBodySegment:
 
     def grow(self):
         self.next = SnakeBodySegment(
-            STARTING_X - 10,
-            STARTING_Y,
-            STARTING_DIRECTION_X,
-            STARTING_DIRECTION_Y,
-            STARTING_SPEED
+            START_X - 10,
+            START_Y,
+            START_DIRECTION_X,
+            START_DIRECTION_Y,
+            START_SPEED
         )
 
     def draw(self):
@@ -161,11 +161,11 @@ class Snake:
 
     def __init__(self):
         self.head = SnakeBodySegment(
-            STARTING_X,
-            STARTING_Y,
-            STARTING_DIRECTION_X,
-            STARTING_DIRECTION_Y,
-            STARTING_SPEED
+            START_X,
+            START_Y,
+            START_DIRECTION_X,
+            START_DIRECTION_Y,
+            START_SPEED
         )
         self.tail = self.head
         # Mock (remove it later):

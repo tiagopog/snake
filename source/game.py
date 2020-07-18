@@ -21,7 +21,7 @@ class Game:
         """
         self.in_collision_debounce = not self.in_collision_debounce
 
-    def check_collision_between(self, source, target):
+    def check_collision_between(self, source, target, on_collision):
         """
         TODO
         """
@@ -32,7 +32,7 @@ class Game:
         elif not in_debounce and self.has_collision_between(source, target):
             self.toggle_collision_debounce()
             self.increase_score()
-            print(self.score)
+            on_collision()
 
     def has_collision_between(self, source, target):
         """
