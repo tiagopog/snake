@@ -1,6 +1,6 @@
 import arcade
 
-from source import game
+from source.game import Game
 from source.snake import Snake
 from source.food import Food
 
@@ -14,11 +14,17 @@ class MyGame(arcade.Window):
     """
 
     def __init__(self, width, height):
+        """
+        TODO
+        """
         super().__init__(width, height)
-        self.snake = None
         arcade.set_background_color(arcade.color.BLACK)
 
     def setup(self):
+        """
+        TODO
+        """
+        self.game = Game()
         self.snake = Snake()
         self.food = Food()
 
@@ -57,8 +63,7 @@ class MyGame(arcade.Window):
         All the logic to move, and the game logic goes here.
         """
         self.snake.move()
-        if game.has_collision_between(self.snake.head, self.food):
-            print("Snake has eaten the food!")
+        self.game.check_collision_between(self.snake.head, self.food)
 
 
 def main():
