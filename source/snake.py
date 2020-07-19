@@ -41,32 +41,44 @@ class SnakeBodySegment:
         return self.BODY_HEIGHT
 
     @property
-    def is_going_up(self):
+    def is_moving_up(self):
         return (
             self.direction_x == NEUTRAL_DIRECTION and
             self.direction_y == POSITIVE_DIRECTION
         )
 
     @property
-    def is_going_down(self):
+    def is_moving_down(self):
         return (
             self.direction_x == NEUTRAL_DIRECTION and
             self.direction_y == NEGATIVE_DIRECTION
         )
 
     @property
-    def is_going_left(self):
+    def is_moving_left(self):
         return (
             self.direction_x == NEGATIVE_DIRECTION and
             self.direction_y == NEUTRAL_DIRECTION
         )
 
     @property
-    def is_going_right(self):
+    def is_moving_right(self):
         return (
             self.direction_x == POSITIVE_DIRECTION and
             self.direction_y == NEUTRAL_DIRECTION
         )
+
+    @property
+    def is_moving_vertically(self):
+        return self.direction_x == NEUTRAL_DIRECTION
+
+    @property
+    def is_moving_horizontally(self):
+        return self.direction_y == NEUTRAL_DIRECTION
+
+    @property
+    def can_turn_direction(self):
+        return not self.next or not self.next.turning_point
 
     def move(self):
         self.x += self.direction_x * self.speed
@@ -74,7 +86,7 @@ class SnakeBodySegment:
         self._check_turning_point()
 
     def turn_up(self):
-        if self.is_going_down:
+        if self.is_moving_vertically or not self.can_turn_direction:
             return
 
         self.direction_x = NEUTRAL_DIRECTION
@@ -82,7 +94,7 @@ class SnakeBodySegment:
         self.propagate_turning_point('up')
 
     def turn_down(self):
-        if self.is_going_up:
+        if self.is_moving_vertically or not self.can_turn_direction:
             return
 
         self.direction_x = NEUTRAL_DIRECTION
@@ -90,7 +102,7 @@ class SnakeBodySegment:
         self.propagate_turning_point('down')
 
     def turn_left(self):
-        if self.is_going_right:
+        if self.is_moving_horizontally or not self.can_turn_direction:
             return
 
         self.direction_x = NEGATIVE_DIRECTION
@@ -98,7 +110,7 @@ class SnakeBodySegment:
         self.propagate_turning_point('left')
 
     def turn_right(self):
-        if self.is_going_left:
+        if self.is_moving_horizontally or not self.can_turn_direction:
             return
 
         self.direction_x = POSITIVE_DIRECTION
@@ -106,6 +118,10 @@ class SnakeBodySegment:
         self.propagate_turning_point('right')
 
     def propagate_turning_point(self, direction):
+        """
+        Set to next body segment a Cartensian coordinate where it will turn to
+        given `direction`.
+        """
         if self.next:
             self.next.turning_point = (self.x, self.y, direction)
 
@@ -128,6 +144,10 @@ class SnakeBodySegment:
         ).draw()
 
     def _check_turning_point(self):
+        """
+        Make sure to change a body segment's direction if it has reached a
+        turning point.
+        """
         if self.turning_point is None:
             return
 
@@ -142,15 +162,15 @@ class SnakeBodySegment:
     def _has_reached_target_y(self, target_y, target_direction):
         return (
             target_direction in ('left', 'right') and
-            self.is_going_up and self.y >= target_y or
-            self.is_going_down and self.y <= target_y
+            self.is_moving_up and self.y >= target_y or
+            self.is_moving_down and self.y <= target_y
         )
 
     def _has_reached_target_x(self, target_x, target_direction):
         return (
             target_direction in ('up', 'down') and
-            self.is_going_right and self.x >= target_x or
-            self.is_going_left and self.x <= target_x
+            self.is_moving_right and self.x >= target_x or
+            self.is_moving_left and self.x <= target_x
         )
 
 
