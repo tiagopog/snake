@@ -1,9 +1,14 @@
 import arcade
 
-START_SPEED = 2
+START_SPEED = 3
 
 START_X = 400
 START_Y = 300
+
+UP = "up"
+DOWN = "down"
+RIGHT = "right"
+LEFT = "left"
 
 POSITIVE_DIRECTION = 1
 NEGATIVE_DIRECTION = -1
@@ -30,6 +35,7 @@ class SnakeBodySegment:
 
         self.speed = speed
         self.turning_point = None
+        self.previous = None
         self.next = None
 
     @property
@@ -43,29 +49,29 @@ class SnakeBodySegment:
     @property
     def is_moving_up(self):
         return (
-            self.direction_x == NEUTRAL_DIRECTION and
-            self.direction_y == POSITIVE_DIRECTION
+            self.direction_x == NEUTRAL_DIRECTION
+            and self.direction_y == POSITIVE_DIRECTION
         )
 
     @property
     def is_moving_down(self):
         return (
-            self.direction_x == NEUTRAL_DIRECTION and
-            self.direction_y == NEGATIVE_DIRECTION
+            self.direction_x == NEUTRAL_DIRECTION
+            and self.direction_y == NEGATIVE_DIRECTION
         )
 
     @property
     def is_moving_left(self):
         return (
-            self.direction_x == NEGATIVE_DIRECTION and
-            self.direction_y == NEUTRAL_DIRECTION
+            self.direction_x == NEGATIVE_DIRECTION
+            and self.direction_y == NEUTRAL_DIRECTION
         )
 
     @property
     def is_moving_right(self):
         return (
-            self.direction_x == POSITIVE_DIRECTION and
-            self.direction_y == NEUTRAL_DIRECTION
+            self.direction_x == POSITIVE_DIRECTION
+            and self.direction_y == NEUTRAL_DIRECTION
         )
 
     @property
@@ -91,7 +97,7 @@ class SnakeBodySegment:
 
         self.direction_x = NEUTRAL_DIRECTION
         self.direction_y = POSITIVE_DIRECTION
-        self.propagate_turning_point('up')
+        self.propagate_turning_point(UP)
 
     def turn_down(self):
         if self.is_moving_vertically or not self.can_turn_direction:
@@ -99,7 +105,7 @@ class SnakeBodySegment:
 
         self.direction_x = NEUTRAL_DIRECTION
         self.direction_y = NEGATIVE_DIRECTION
-        self.propagate_turning_point('down')
+        self.propagate_turning_point(DOWN)
 
     def turn_left(self):
         if self.is_moving_horizontally or not self.can_turn_direction:
@@ -107,7 +113,7 @@ class SnakeBodySegment:
 
         self.direction_x = NEGATIVE_DIRECTION
         self.direction_y = NEUTRAL_DIRECTION
-        self.propagate_turning_point('left')
+        self.propagate_turning_point(LEFT)
 
     def turn_right(self):
         if self.is_moving_horizontally or not self.can_turn_direction:
@@ -115,7 +121,7 @@ class SnakeBodySegment:
 
         self.direction_x = POSITIVE_DIRECTION
         self.direction_y = NEUTRAL_DIRECTION
-        self.propagate_turning_point('right')
+        self.propagate_turning_point(RIGHT)
 
     def propagate_turning_point(self, direction):
         """
@@ -127,12 +133,13 @@ class SnakeBodySegment:
 
     def grow(self):
         self.next = SnakeBodySegment(
-            START_X - 10,
-            START_Y,
-            START_DIRECTION_X,
-            START_DIRECTION_Y,
-            START_SPEED
+            x=START_X - SnakeBodySegment.BODY_HEIGHT,
+            y=START_Y,
+            direction_x=START_DIRECTION_X,
+            direction_y=START_DIRECTION_Y,
+            speed=START_SPEED
         )
+        self.next.previous = self
 
     def draw(self):
         arcade.create_rectangle_filled(
@@ -140,7 +147,7 @@ class SnakeBodySegment:
             center_y=self.y,
             width=self.BODY_WIDTH,
             height=self.BODY_HEIGHT,
-            color=arcade.color.WHITE
+            color=arcade.color.WHITE,
         ).draw()
 
     def _check_turning_point(self):
@@ -154,23 +161,39 @@ class SnakeBodySegment:
         target_x, target_y, target_direction = self.turning_point
         reached_x = self._has_reached_target_x
         reached_y = self._has_reached_target_y
+        reached = False
 
-        if reached_x(target_x, target_direction) or reached_y(target_y, target_direction):
-            getattr(self, f'turn_{target_direction}')()
+        if reached_x(target_x, target_direction):
+            reached = True
+            direction = POSITIVE_DIRECTION if target_direction == DOWN else NEGATIVE_DIRECTION
+            self.y = self.previous.y + direction * self.BODY_HEIGHT
+            self.x = target_x
+        elif reached_y(target_y, target_direction):
+            reached = True
+            direction = POSITIVE_DIRECTION if target_direction == LEFT else NEGATIVE_DIRECTION
+            self.x = self.previous.x + direction * self.BODY_WIDTH
+            self.y = target_y
+
+        if reached:
+            getattr(self, f"turn_{target_direction}")()
             self.turning_point = None
 
     def _has_reached_target_y(self, target_y, target_direction):
         return (
-            target_direction in ('left', 'right') and
-            self.is_moving_up and self.y >= target_y or
-            self.is_moving_down and self.y <= target_y
+            target_direction in ("left", "right")
+            and self.is_moving_up
+            and self.y >= target_y
+            or self.is_moving_down
+            and self.y <= target_y
         )
 
     def _has_reached_target_x(self, target_x, target_direction):
         return (
-            target_direction in ('up', 'down') and
-            self.is_moving_right and self.x >= target_x or
-            self.is_moving_left and self.x <= target_x
+            target_direction in ("up", "down")
+            and self.is_moving_right
+            and self.x >= target_x
+            or self.is_moving_left
+            and self.x <= target_x
         )
 
 
@@ -181,11 +204,11 @@ class Snake:
 
     def __init__(self):
         self.head = SnakeBodySegment(
-            START_X,
-            START_Y,
-            START_DIRECTION_X,
-            START_DIRECTION_Y,
-            START_SPEED
+            x=START_X,
+            y=START_Y,
+            direction_x=START_DIRECTION_X,
+            direction_y=START_DIRECTION_Y,
+            speed=START_SPEED
         )
         self.tail = self.head
         # Mock (remove it later):

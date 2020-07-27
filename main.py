@@ -73,6 +73,7 @@ class MyGame(arcade.Window):
             on_collision=self.on_collision
         )
 
+
 def main():
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
     game.setup()
