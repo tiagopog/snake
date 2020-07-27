@@ -137,7 +137,7 @@ class SnakeBodySegment:
             y=START_Y,
             direction_x=START_DIRECTION_X,
             direction_y=START_DIRECTION_Y,
-            speed=START_SPEED
+            speed=START_SPEED,
         )
         self.next.previous = self
 
@@ -161,22 +161,29 @@ class SnakeBodySegment:
         target_x, target_y, target_direction = self.turning_point
         reached_x = self._has_reached_target_x
         reached_y = self._has_reached_target_y
-        reached = False
+        reached = reached_x(target_x, target_direction) or reached_y(
+            target_y, target_direction
+        )
 
-        if reached_x(target_x, target_direction):
-            reached = True
-            direction = POSITIVE_DIRECTION if target_direction == DOWN else NEGATIVE_DIRECTION
-            self.y = self.previous.y + direction * self.BODY_HEIGHT
-            self.x = target_x
-        elif reached_y(target_y, target_direction):
-            reached = True
-            direction = POSITIVE_DIRECTION if target_direction == LEFT else NEGATIVE_DIRECTION
+        if not reached:
+            return
+
+        getattr(self, f"turn_{target_direction}")()
+        self.turning_point = None
+        self._fix_segment_positions(target_x, target_y)
+
+    def _fix_segment_positions(self, target_x, target_y):
+        """
+        TODO
+        """
+        if self.is_moving_horizontally:
+            direction = -1 * self.direction_x
             self.x = self.previous.x + direction * self.BODY_WIDTH
             self.y = target_y
-
-        if reached:
-            getattr(self, f"turn_{target_direction}")()
-            self.turning_point = None
+        else:
+            direction = -1 * self.direction_y
+            self.y = self.previous.y + direction * self.BODY_HEIGHT
+            self.x = target_x
 
     def _has_reached_target_y(self, target_y, target_direction):
         return (
@@ -208,7 +215,7 @@ class Snake:
             y=START_Y,
             direction_x=START_DIRECTION_X,
             direction_y=START_DIRECTION_Y,
-            speed=START_SPEED
+            speed=START_SPEED,
         )
         self.tail = self.head
         # Mock (remove it later):
