@@ -89,7 +89,7 @@ class SnakeBodySegment:
     def move(self):
         self.x += self.direction_x * self.speed
         self.y += self.direction_y * self.speed
-        self._check_turning_point()
+        self.check_turning_point()
 
     def turn_up(self):
         if self.is_moving_vertically or not self.can_turn_direction:
@@ -133,24 +133,16 @@ class SnakeBodySegment:
 
     def grow(self):
         self.next = SnakeBodySegment(
-            x=START_X - SnakeBodySegment.BODY_HEIGHT,
-            y=START_Y,
-            direction_x=START_DIRECTION_X,
-            direction_y=START_DIRECTION_Y,
-            speed=START_SPEED,
+            x=self.x,
+            y=self.y,
+            direction_x=self.direction_x,
+            direction_y=self.direction_y,
+            speed=self.speed,
         )
         self.next.previous = self
+        self.next.fix_segment_positions(self.x, self.y)
 
-    def draw(self):
-        arcade.create_rectangle_filled(
-            center_x=self.x,
-            center_y=self.y,
-            width=self.BODY_WIDTH,
-            height=self.BODY_HEIGHT,
-            color=arcade.color.WHITE,
-        ).draw()
-
-    def _check_turning_point(self):
+    def check_turning_point(self):
         """
         Make sure to change a body segment's direction if it has reached a
         turning point.
@@ -168,26 +160,40 @@ class SnakeBodySegment:
         if not reached:
             return
 
+        self.fix_segment_positions(target_x, target_y)
         getattr(self, f"turn_{target_direction}")()
         self.turning_point = None
-        self._fix_segment_positions(target_x, target_y)
 
-    def _fix_segment_positions(self, target_x, target_y):
+    def fix_segment_positions(self, target_x, target_y):
         """
         TODO
         """
-        if self.is_moving_horizontally:
-            direction = -1 * self.direction_x
+        if self.previous is None:
+            return
+        elif self.previous.is_moving_horizontally:
+            direction = -1 * self.previous.direction_x
             self.x = self.previous.x + direction * self.BODY_WIDTH
             self.y = target_y
         else:
-            direction = -1 * self.direction_y
+            direction = -1 * self.previous.direction_y
             self.y = self.previous.y + direction * self.BODY_HEIGHT
             self.x = target_x
 
+    def draw(self):
+        """
+        TODO
+        """
+        arcade.create_rectangle_filled(
+            center_x=self.x,
+            center_y=self.y,
+            width=self.BODY_WIDTH,
+            height=self.BODY_HEIGHT,
+            color=arcade.color.WHITE,
+        ).draw()
+
     def _has_reached_target_y(self, target_y, target_direction):
         return (
-            target_direction in ("left", "right")
+            target_direction in (LEFT, RIGHT)
             and self.is_moving_up
             and self.y >= target_y
             or self.is_moving_down
@@ -196,7 +202,7 @@ class SnakeBodySegment:
 
     def _has_reached_target_x(self, target_x, target_direction):
         return (
-            target_direction in ("up", "down")
+            target_direction in (UP, DOWN)
             and self.is_moving_right
             and self.x >= target_x
             or self.is_moving_left
@@ -218,11 +224,11 @@ class Snake:
             speed=START_SPEED,
         )
         self.tail = self.head
-        # Mock (remove it later):
         self.grow()
 
     def grow(self):
         self.tail.grow()
+        self.tail = self.tail.next
 
     def move(self):
         segment = self.head

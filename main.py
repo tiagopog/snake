@@ -60,7 +60,7 @@ class MyGame(arcade.Window):
 
     def on_collision(self):
         self.food.reset_position()
-        # TODO: self.snake.grow()
+        self.snake.grow()
 
     def update(self, delta_time):
         """
@@ -68,9 +68,7 @@ class MyGame(arcade.Window):
         """
         self.snake.move()
         self.game.check_collision_between(
-            source=self.snake.head,
-            target=self.food,
-            on_collision=self.on_collision
+            source=self.snake.head, target=self.food, on_collision=self.on_collision
         )
 
 
