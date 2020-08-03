@@ -20,6 +20,7 @@ class MyGame(arcade.Window):
         """
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.BLACK)
+        self.debug = False
 
     def setup(self):
         """
@@ -51,6 +52,8 @@ class MyGame(arcade.Window):
             self.snake.turn_left()
         elif key == arcade.key.RIGHT:
             self.snake.turn_right()
+        elif key == arcade.key.D:
+            self.debug = True
 
     def on_key_release(self, key, modifiers):
         """
@@ -66,10 +69,19 @@ class MyGame(arcade.Window):
         """
         All the logic to move, and the game logic goes here.
         """
+        self.check_debug()
         self.snake.move()
         self.game.check_collision_between(
             source=self.snake.head, target=self.food, on_collision=self.on_collision
         )
+
+    def check_debug(self):
+        """
+        Just a simple debug helper.
+        """
+        if self.debug:
+            import pdb
+            pdb.set_trace()
 
 
 def main():
