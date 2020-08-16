@@ -34,5 +34,5 @@ class Food:
             center_y=self.y,
             width=BODY_WIDTH,
             height=BODY_HEIGHT,
-            color=arcade.color.GREEN
+            color=arcade.color.GREEN,
         ).draw()

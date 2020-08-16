@@ -238,7 +238,6 @@ class SnakeBodySegment:
         if self.turning_point:
             self.turning_point.draw()
 
-
     def _has_reached_target_y(self, target_y, target_direction):
         return (
             target_direction in (LEFT, RIGHT)
