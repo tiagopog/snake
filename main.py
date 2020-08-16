@@ -1,6 +1,7 @@
 import arcade
 
 from source.game import Game
+from source.arena import Arena
 from source.score import Score
 from source.snake import Snake
 from source.food import Food
@@ -27,6 +28,7 @@ class MyGame(arcade.Window):
         TODO
         """
         self.game = Game()
+        self.arena = Arena()
         self.score = Score()
         self.snake = Snake()
         self.food = Food()
@@ -36,9 +38,10 @@ class MyGame(arcade.Window):
         Render the screen.
         """
         arcade.start_render()
-        self.snake.draw()
-        self.food.draw()
+        self.arena.draw()
         self.score.draw(score=self.game.score)
+        self.food.draw()
+        self.snake.draw()
 
     def on_key_press(self, key, modifiers):
         """
@@ -80,8 +83,8 @@ class MyGame(arcade.Window):
         Just a simple debug helper.
         """
         if self.debug:
-            import pdb
-            pdb.set_trace()
+            pass
+            # import pdb; pdb.set_trace()
 
 
 def main():

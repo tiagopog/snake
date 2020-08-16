@@ -9,7 +9,7 @@ I can't think on a better language to implment a snake game than Python (:snake:
 - [x] Implement collision detection + score system;
 - [x] Grow the snake's body and speed when scoring;
 - [x] Make sure the snake's movement mechanics work at any speed;
-- [ ] Create an arena to limit where the snake can go;
+- [x] Create arena to limit where the snake can go;
 - [ ] Make sure the food doesn't appear over or beyond the arena's border;
 - [ ] Detect collision between the snake and the arena;
 - [ ] Detect collision between the snake and its own body;

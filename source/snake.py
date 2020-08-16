@@ -1,10 +1,5 @@
 import arcade
 
-START_SPEED = 3
-
-START_X = 400
-START_Y = 300
-
 UP = "up"
 DOWN = "down"
 RIGHT = "right"
@@ -262,13 +257,18 @@ class Snake:
     TODO
     """
 
+    START_SPEED = 3
+
+    START_X = 400
+    START_Y = 300
+
     def __init__(self):
         self.head = SnakeBodySegment(
-            x=START_X,
-            y=START_Y,
+            x=self.START_X,
+            y=self.START_Y,
+            speed=self.START_SPEED,
             direction_x=START_DIRECTION_X,
             direction_y=START_DIRECTION_Y,
-            speed=START_SPEED,
         )
         self.tail = self.head
         self.grow()
