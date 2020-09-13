@@ -24,9 +24,15 @@ class Food:
     def height(self):
         return self.BODY_HEIGHT
 
-    def reset_position(self):
-        self.x = random.randint(0, self.MAX_X)
-        self.y = random.randint(0, self.MAX_Y)
+    def reset_position(self, range_x=None, range_y=None):
+        range_x = range_x or (0, self.MAX_X)
+        range_x = map(lambda e: round(e), range_x)
+
+        range_y = range_y or (0, self.MAX_Y)
+        range_y = map(lambda e: round(e), range_y)
+
+        self.x = random.randint(*range_x)
+        self.y = random.randint(*range_y)
 
     def draw(self):
         arcade.create_rectangle_filled(

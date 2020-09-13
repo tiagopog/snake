@@ -65,8 +65,11 @@ class MyGame(arcade.Window):
         pass
 
     def on_collision(self):
-        self.food.reset_position()
+        """
+        Called when the snake collides againts the food or itself.
+        """
         self.snake.grow()
+        self.food.reset_position(range_x=self.arena.range_x, range_y=self.arena.range_y)
 
     def update(self, delta_time):
         """
@@ -84,7 +87,6 @@ class MyGame(arcade.Window):
         """
         if self.debug:
             pass
-            # import pdb; pdb.set_trace()
 
 
 def main():

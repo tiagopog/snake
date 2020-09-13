@@ -12,7 +12,7 @@ class Score:
         from main import SCREEN_WIDTH, SCREEN_HEIGHT
 
         self.x = SCREEN_WIDTH / 2 - 30
-        self.y = SCREEN_HEIGHT - 30
+        self.y = SCREEN_HEIGHT - 23
 
     def draw(self, score):
         arcade.draw_text(
