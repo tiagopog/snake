@@ -6,13 +6,13 @@ class Score:
     TODO
     """
 
-    SCORE_TEXT = "Score: {}"
+    SCORE_TEXT = "SCORE: {}"
 
     def __init__(self):
         from main import SCREEN_WIDTH, SCREEN_HEIGHT
 
         self.x = SCREEN_WIDTH / 2 - 30
-        self.y = SCREEN_HEIGHT - 23
+        self.y = SCREEN_HEIGHT - 16
 
     def draw(self, score):
         arcade.draw_text(

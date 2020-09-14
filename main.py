@@ -28,10 +28,10 @@ class MyGame(arcade.Window):
         TODO
         """
         self.game = Game()
-        self.arena = Arena()
         self.score = Score()
         self.snake = Snake()
-        self.food = Food()
+        self.arena = Arena(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.food = Food(self.arena.range_x, self.arena.range_y)
 
     def on_draw(self):
         """
@@ -69,7 +69,7 @@ class MyGame(arcade.Window):
         Called when the snake collides againts the food or itself.
         """
         self.snake.grow()
-        self.food.reset_position(range_x=self.arena.range_x, range_y=self.arena.range_y)
+        self.food.reset_position()
 
     def update(self, delta_time):
         """

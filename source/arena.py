@@ -10,14 +10,12 @@ class Arena:
     TOTAL_BORDER_WIDTH = 15
     BORDER_WIDTH = TOTAL_BORDER_WIDTH / 2
 
-    def __init__(self):
-        from main import SCREEN_WIDTH, SCREEN_HEIGHT
+    def __init__(self, screen_width, screen_height):
+        self.width = screen_width - self.TOTAL_BORDER_WIDTH
+        self.height = screen_height - self.TOTAL_BORDER_WIDTH
 
-        self.width = SCREEN_WIDTH - self.TOTAL_BORDER_WIDTH
-        self.height = SCREEN_HEIGHT - self.TOTAL_BORDER_WIDTH
-
-        self.x = SCREEN_WIDTH / 2
-        self.y = SCREEN_HEIGHT / 2
+        self.x = screen_width / 2
+        self.y = screen_height / 2
 
         self.min_x = self.BORDER_WIDTH + self.PADDING
         self.max_x = self.min_x + self.width - 2 * self.PADDING
