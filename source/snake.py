@@ -1,5 +1,7 @@
 import arcade
 
+from .game import GameObject
+
 UP = "up"
 DOWN = "down"
 RIGHT = "right"
@@ -13,7 +15,7 @@ START_DIRECTION_X = POSITIVE_DIRECTION
 START_DIRECTION_Y = NEUTRAL_DIRECTION
 
 
-class SnakeTurningPoint:
+class SnakeTurningPoint(GameObject):
     """
     TODO
     """
@@ -22,8 +24,7 @@ class SnakeTurningPoint:
     BODY_HEIGHT = 10
 
     def __init__(self, x, y, direction):
-        self.x = x
-        self.y = y
+        super().__init__(x, y, self.BODY_WIDTH, self.BODY_HEIGHT)
         self.direction = direction
 
     @property
@@ -34,13 +35,13 @@ class SnakeTurningPoint:
         arcade.create_rectangle_filled(
             center_x=self.x,
             center_y=self.y,
-            width=self.BODY_WIDTH,
-            height=self.BODY_HEIGHT,
+            width=self.width,
+            height=self.height,
             color=arcade.color.WHITE,
         ).draw()
 
 
-class SnakeBodySegment:
+class SnakeBodySegment(GameObject):
     """
     TODO
     """
@@ -49,8 +50,7 @@ class SnakeBodySegment:
     BODY_HEIGHT = 10
 
     def __init__(self, x, y, direction_x, direction_y, speed):
-        self.x = x
-        self.y = y
+        super().__init__(x, y, self.BODY_WIDTH, self.BODY_HEIGHT)
 
         self.direction_x = direction_x
         self.direction_y = direction_y
@@ -59,14 +59,6 @@ class SnakeBodySegment:
         self.turning_point = None
         self.previous = None
         self.next = None
-
-    @property
-    def width(self):
-        return self.BODY_WIDTH
-
-    @property
-    def height(self):
-        return self.BODY_HEIGHT
 
     @property
     def is_moving_up(self):
@@ -225,8 +217,8 @@ class SnakeBodySegment:
         arcade.create_rectangle_filled(
             center_x=self.x,
             center_y=self.y,
-            width=self.BODY_WIDTH,
-            height=self.BODY_HEIGHT,
+            width=self.width,
+            height=self.height,
             color=arcade.color.WHITE,
         ).draw()
 

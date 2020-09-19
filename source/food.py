@@ -1,8 +1,10 @@
 import arcade
 import random
 
+from .game import GameObject
 
-class Food:
+
+class Food(GameObject):
     """
     TODO
     """
@@ -14,6 +16,8 @@ class Food:
     MAX_Y = 600 - BODY_HEIGHT
 
     def __init__(self, range_x=None, range_y=None):
+        super().__init__(width=self.BODY_WIDTH, height=self.BODY_HEIGHT)
+
         (min_x, max_x) = range_x or (0, self.MAX_X)
         self.range_x = (round(min_x), round(max_x))
 
@@ -21,14 +25,6 @@ class Food:
         self.range_y = (round(min_y), round(max_y))
 
         self.reset_position()
-
-    @property
-    def width(self):
-        return self.BODY_WIDTH
-
-    @property
-    def height(self):
-        return self.BODY_HEIGHT
 
     def reset_position(self):
         self.x = random.randint(*self.range_x)
@@ -38,7 +34,7 @@ class Food:
         arcade.create_rectangle_filled(
             center_x=self.x,
             center_y=self.y,
-            width=self.BODY_WIDTH,
-            height=self.BODY_HEIGHT,
+            width=self.width,
+            height=self.height,
             color=arcade.color.GREEN,
         ).draw()

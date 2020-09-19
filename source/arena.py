@@ -1,7 +1,9 @@
 import arcade
 
+from .game import GameObject
 
-class Arena:
+
+class Arena(GameObject):
     """
     TODO
     """
@@ -11,6 +13,8 @@ class Arena:
     BORDER_WIDTH = TOTAL_BORDER_WIDTH / 2
 
     def __init__(self, screen_width, screen_height):
+        super().__init__()
+
         self.width = screen_width - self.TOTAL_BORDER_WIDTH
         self.height = screen_height - self.TOTAL_BORDER_WIDTH
 
