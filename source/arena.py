@@ -66,11 +66,11 @@ class Arena(GameObject):
             self.bottom_border,
         )
 
-        self.min_x = 0
-        self.max_x = screen_width
+        self.min_x = self.left_border.right_x
+        self.max_x = self.right_border.left_x
 
-        self.min_y = 0
-        self.max_y = screen_height
+        self.min_y = self.bottom_border.top_y
+        self.max_y = self.top_border.bottom_y
 
     @property
     def range_x(self):
