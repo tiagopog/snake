@@ -28,9 +28,9 @@ class MyGame(arcade.Window):
         TODO
         """
         self.game = Game()
-        self.score = Score()
         self.snake = Snake()
         self.arena = Arena(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.score = Score(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.food = Food(self.arena.range_x, self.arena.range_y)
 
     def on_draw(self):
@@ -64,12 +64,15 @@ class MyGame(arcade.Window):
         """
         pass
 
-    def on_collision(self):
+    def on_collision(self, obj):
         """
-        Called when the snake collides againts the food or itself.
+        Called when the snake collides against other `obj` in the game.
         """
-        self.snake.grow()
-        self.food.reset_position()
+        if isinstance(obj, Food):
+            self.snake.grow()
+            self.food.reset_position()
+        else:
+            raise "Gave over!"
 
     def update(self, delta_time):
         """
@@ -78,7 +81,9 @@ class MyGame(arcade.Window):
         self.check_debug()
         self.snake.move()
         self.game.check_collision_between(
-            source=self.snake.head, target=self.food, on_collision=self.on_collision
+            source=self.snake.head,
+            targets=[self.food, *self.arena.borders],
+            on_collision=self.on_collision,
         )
 
     def check_debug(self):

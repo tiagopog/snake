@@ -3,29 +3,74 @@ import arcade
 from .game import GameObject
 
 
+class ArenaBorder(GameObject):
+    """
+    TODO
+    """
+
+    def draw(self):
+        arcade.create_rectangle_filled(
+            width=self.width,
+            height=self.height,
+            center_x=self.x,
+            center_y=self.y,
+            color=arcade.color.GRAY,
+        ).draw()
+
+
 class Arena(GameObject):
     """
     TODO
     """
 
-    PADDING = 30
-    TOTAL_BORDER_WIDTH = 15
-    BORDER_WIDTH = TOTAL_BORDER_WIDTH / 2
+    BORDER_SIZE = 15
 
     def __init__(self, screen_width, screen_height):
         super().__init__()
 
-        self.width = screen_width - self.TOTAL_BORDER_WIDTH
-        self.height = screen_height - self.TOTAL_BORDER_WIDTH
+        self.width = screen_width - 2 * self.BORDER_SIZE
+        self.height = screen_height - 2 * self.BORDER_SIZE
 
-        self.x = screen_width / 2
-        self.y = screen_height / 2
+        self.left_border = ArenaBorder(
+            x=self.BORDER_SIZE / 2,
+            y=screen_height / 2,
+            width=self.BORDER_SIZE,
+            height=screen_height,
+        )
 
-        self.min_x = self.BORDER_WIDTH + self.PADDING
-        self.max_x = self.min_x + self.width - 2 * self.PADDING
+        self.right_border = ArenaBorder(
+            x=screen_width - self.BORDER_SIZE / 2,
+            y=screen_height / 2,
+            width=self.BORDER_SIZE,
+            height=screen_height,
+        )
 
-        self.min_y = self.BORDER_WIDTH + self.PADDING
-        self.max_y = self.min_y + self.height - 2 * self.PADDING
+        self.top_border = ArenaBorder(
+            x=screen_width / 2,
+            y=screen_height - self.BORDER_SIZE / 2,
+            width=screen_width,
+            height=self.BORDER_SIZE,
+        )
+
+        self.bottom_border = ArenaBorder(
+            x=screen_width / 2,
+            y=self.BORDER_SIZE / 2,
+            width=screen_width,
+            height=self.BORDER_SIZE,
+        )
+
+        self.borders = (
+            self.left_border,
+            self.right_border,
+            self.top_border,
+            self.bottom_border,
+        )
+
+        self.min_x = 0
+        self.max_x = screen_width
+
+        self.min_y = 0
+        self.max_y = screen_height
 
     @property
     def range_x(self):
@@ -36,11 +81,5 @@ class Arena(GameObject):
         return (self.min_y, self.max_y)
 
     def draw(self):
-        arcade.create_rectangle_outline(
-            width=self.width,
-            height=self.height,
-            center_x=self.x,
-            center_y=self.y,
-            border_width=self.TOTAL_BORDER_WIDTH,
-            color=arcade.color.WHITE,
-        ).draw()
+        for border in self.borders:
+            border.draw()

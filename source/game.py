@@ -9,6 +9,30 @@ class BaseShape:
         self.width = width
         self.height = height
 
+    @property
+    def center_x(self):
+        return self.x
+
+    @property
+    def center_y(self):
+        return self.y
+
+    @property
+    def left_x(self):
+        return self.x - self.width / 2
+
+    @property
+    def right_x(self):
+        return self.x + self.width / 2
+
+    @property
+    def top_y(self):
+        return self.y + self.height / 2
+
+    @property
+    def bottom_y(self):
+        return self.y - self.height / 2
+
 
 class GameObject(BaseShape):
     """
@@ -59,12 +83,10 @@ class Game:
 
         for target in targets:
             overlap_x = (
-                source.x + source.width >= target.x
-                and source.x <= target.x + target.width
+                source.left_x <= target.right_x and source.right_x >= target.left_x
             )
             overlap_y = (
-                source.y >= target.y - target.height
-                and source.y - source.height <= target.y
+                source.top_y >= target.bottom_y and source.bottom_y <= target.top_y
             )
 
             if overlap_x and overlap_y:
