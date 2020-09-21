@@ -43,14 +43,6 @@ class GameObject(BaseShape):
         raise NotImplementedError
 
 
-class BoundingBox(BaseShape):
-    """
-    Invisble boxes to map trickier collision areas on game objects.
-    """
-
-    pass
-
-
 class Game:
     """
     TODO

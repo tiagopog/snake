@@ -29,9 +29,9 @@ class MyGame(arcade.Window):
         """
         self.game = Game()
         self.snake = Snake()
-        self.arena = Arena(SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.score = Score(SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.food = Food(self.arena.range_x, self.arena.range_y)
+        self.arena = Arena(parent=self)
+        self.score = Score(parent=self)
+        self.food = Food(parent=self)
 
     def on_draw(self):
         """

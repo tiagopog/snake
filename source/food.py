@@ -2,6 +2,7 @@ import arcade
 import random
 
 from .game import GameObject
+from .arena import Arena
 
 
 class Food(GameObject):
@@ -9,26 +10,21 @@ class Food(GameObject):
     TODO
     """
 
-    BODY_WIDTH = 10
-    BODY_HEIGHT = 10
+    BODY_SIZE = 10
 
-    MAX_X = 800 - BODY_WIDTH
-    MAX_Y = 600 - BODY_HEIGHT
+    def __init__(self, parent):
+        super().__init__(width=self.BODY_SIZE, height=self.BODY_SIZE)
+        self.min_x = Arena.BORDER_SIZE + self.BODY_SIZE / 2
+        self.max_x = parent.width - Arena.BORDER_SIZE - self.BODY_SIZE / 2
 
-    def __init__(self, range_x=None, range_y=None):
-        super().__init__(width=self.BODY_WIDTH, height=self.BODY_HEIGHT)
-
-        (min_x, max_x) = range_x or (0, self.MAX_X)
-        self.range_x = (round(min_x), round(max_x))
-
-        (min_y, max_y) = range_y or (0, self.MAX_Y)
-        self.range_y = (round(min_y), round(max_y))
+        self.min_y = Arena.BORDER_SIZE + self.BODY_SIZE / 2
+        self.max_y = parent.height - Arena.BORDER_SIZE - self.BODY_SIZE / 2
 
         self.reset_position()
 
     def reset_position(self):
-        self.x = random.randint(*self.range_x)
-        self.y = random.randint(*self.range_y)
+        self.x = random.randint(self.min_x, self.max_x)
+        self.y = random.randint(self.min_y, self.max_y)
 
     def draw(self):
         arcade.create_rectangle_filled(

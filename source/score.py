@@ -10,9 +10,9 @@ class Score(GameObject):
 
     SCORE_TEXT = "SCORE: {}"
 
-    def __init__(self, screen_width, screen_height):
-        x = screen_width / 2 - 30
-        y = screen_height - 16
+    def __init__(self, parent):
+        x = parent.width / 2 - 30
+        y = parent.height - 16
         super().__init__(x, y)
 
     def draw(self, score):
