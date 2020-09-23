@@ -197,7 +197,7 @@ class SnakeBodySegment(GameObject):
 
     def fix_segment_positions(self, target_x, target_y):
         """
-        TODO
+        Make sure to align segments when they reach a turning point.
         """
         if self.previous is None:
             return
@@ -212,7 +212,8 @@ class SnakeBodySegment(GameObject):
 
     def draw(self):
         """
-        TODO
+        Draw the snake segment and the turning point if there's one, because that
+        makes the snake's movement animation smoothier).
         """
         arcade.create_rectangle_filled(
             center_x=self.x,
@@ -246,7 +247,8 @@ class SnakeBodySegment(GameObject):
 
 class Snake:
     """
-    TODO
+    Linked list of `SnakeBodySegment` that represents the entire snake character
+    in the game.
     """
 
     START_SPEED = 3
@@ -263,11 +265,13 @@ class Snake:
             direction_y=START_DIRECTION_Y,
         )
         self.tail = self.head
+        self.segments = []
         self.grow()
 
     def grow(self):
         self.tail.grow()
         self.tail = self.tail.next
+        self.segments.append(self.tail)
 
     def move(self):
         segment = self.head

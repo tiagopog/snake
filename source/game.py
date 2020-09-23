@@ -1,6 +1,7 @@
-class BaseShape:
+class BoundingBox:
     """
-    Base definition for shapes in the game.
+    Base definition for delimiting things that can be placed in the
+    game's Cartesian plane.
     """
 
     def __init__(self, x=None, y=None, width=None, height=None):
@@ -34,7 +35,7 @@ class BaseShape:
         return self.y - self.height / 2
 
 
-class GameObject(BaseShape):
+class GameObject(BoundingBox):
     """
     Defines the base data and API for drawable game objects.
     """

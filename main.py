@@ -82,7 +82,7 @@ class MyGame(arcade.Window):
         self.snake.move()
         self.game.check_collision_between(
             source=self.snake.head,
-            targets=[self.food, *self.arena.borders],
+            targets=[self.food, *self.arena.borders, *self.snake.segments[5:]],
             on_collision=self.on_collision,
         )
 
