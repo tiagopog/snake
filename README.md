@@ -15,3 +15,4 @@ I can't think on a better language to implment a snake game than Python (:snake:
 - [X] Detect collision between the snake and its own body;
 - [ ] Implement game over scene;
 - [ ] Implement scoreboard with best scores.
+- [ ] Generate a binary executable for the game.

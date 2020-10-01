@@ -44,6 +44,42 @@ class GameObject(BoundingBox):
         raise NotImplementedError
 
 
+class Scene:
+    """
+    Abstract class to define the main public API for the game scenes.
+    """
+
+    def setup(self):
+        """
+        Initial setup of the scene's objects.
+        """
+        raise NotImplementedError
+
+    def draw(self):
+        """
+        Render the scene screen.
+        """
+        raise NotImplementedError
+
+    def on_key_press(self, key, modifiers):
+        """
+        Called whenever a key is pressed.
+        """
+        raise NotImplementedError
+
+    def on_key_release(self, key, modifiers):
+        """
+        Called when the user releases a key.
+        """
+        raise NotImplementedError
+
+    def update(self, delta_time):
+        """
+        All the logic to run the game simulation goes here.
+        """
+        raise NotImplementedError
+
+
 class Game:
     """
     TODO

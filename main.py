@@ -1,10 +1,6 @@
 import arcade
 
-from source.game import Game
-from source.arena import Arena
-from source.score import Score
-from source.snake import Snake
-from source.food import Food
+from source.scenes import MainScene
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -17,81 +13,44 @@ class MyGame(arcade.Window):
 
     def __init__(self, width, height):
         """
-        TODO
+        Handle the initialization of the game's window and scenes.
         """
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.BLACK)
-        self.debug = False
+        self.main_scene = MainScene()
 
     def setup(self):
         """
-        TODO
+        Setup the objects of the scenes.
         """
-        self.game = Game()
-        self.snake = Snake()
-        self.arena = Arena(parent=self)
-        self.score = Score(parent=self)
-        self.food = Food(parent=self)
+        self.main_scene.setup(parent=self)
 
     def on_draw(self):
         """
-        Render the screen.
+        Render the scene screen.
         """
         arcade.start_render()
-        self.arena.draw()
-        self.score.draw(score=self.game.score)
-        self.food.draw()
-        self.snake.draw()
+        self.main_scene.draw()
 
     def on_key_press(self, key, modifiers):
         """
-        Called whenever a key is pressed.
+        Called whenever a key is pressed. Delegates the handling of such
+        event to the current scene.
         """
-        if key == arcade.key.UP:
-            self.snake.turn_up()
-        elif key == arcade.key.DOWN:
-            self.snake.turn_down()
-        elif key == arcade.key.LEFT:
-            self.snake.turn_left()
-        elif key == arcade.key.RIGHT:
-            self.snake.turn_right()
-        elif key == arcade.key.D:
-            self.debug = True
+        self.main_scene.on_key_press(key, modifiers)
 
     def on_key_release(self, key, modifiers):
         """
-        Called when the user releases a key.
+        Called when the user releases a key. Delegates the handling of such
+        event to the current scene.
         """
-        pass
-
-    def on_collision(self, obj):
-        """
-        Called when the snake collides against other `obj` in the game.
-        """
-        if isinstance(obj, Food):
-            self.snake.grow()
-            self.food.reset_position()
-        else:
-            raise "Gave over!"
+        self.main_scene.on_key_release(key, modifiers)
 
     def update(self, delta_time):
         """
-        All the logic to move, and the game logic goes here.
+        All the logic to run the game simulation goes here.
         """
-        self.check_debug()
-        self.snake.move()
-        self.game.check_collision_between(
-            source=self.snake.head,
-            targets=[self.food, *self.arena.borders, *self.snake.segments[5:]],
-            on_collision=self.on_collision,
-        )
-
-    def check_debug(self):
-        """
-        Just a simple debug helper.
-        """
-        if self.debug:
-            pass
+        self.main_scene.update(delta_time)
 
 
 def main():
