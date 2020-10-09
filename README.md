@@ -1,6 +1,10 @@
 # Snake
 
-A Python implementation of the classic (:snake:) game.
+A Python implementation of the classic :snake: game.
+
+**Note:** the low frame rate here is due to the GIF recording not the game itself.
+
+![python_snake_game](https://user-images.githubusercontent.com/760933/95542853-4fff2900-09cd-11eb-804f-6e805fc561c7.gif)
 
 That's my first attempt on writing games in Python after releasing
 some 2D games in Ruby like [Pong](https://github.com/tiagopog/pong)
