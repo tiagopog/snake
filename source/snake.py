@@ -17,7 +17,8 @@ START_DIRECTION_Y = NEUTRAL_DIRECTION
 
 class SnakeTurningPoint(GameObject):
     """
-    TODO
+    Holds the data that represent where in the game's Cartesian plane a
+    `SnakeBodySegment` should change its direction.
     """
 
     BODY_WIDTH = 10
@@ -43,7 +44,10 @@ class SnakeTurningPoint(GameObject):
 
 class SnakeBodySegment(GameObject):
     """
-    TODO
+    Represents a node in the `Snake`'s doubly linked list body so that every
+    `SnakeBodySegment` stores a reference to its previous and next neighbours.
+    That makes it easier to check and propagate turning points in the snake's
+    body.
     """
 
     BODY_WIDTH = 10
@@ -118,9 +122,6 @@ class SnakeBodySegment(GameObject):
         self.turn(RIGHT)
 
     def turn(self, direction, propagate_turning_point=True):
-        """
-        TODO
-        """
         if direction not in (UP, DOWN, LEFT, RIGHT) or not self.can_turn_direction:
             return
 
@@ -146,6 +147,17 @@ class SnakeBodySegment(GameObject):
         if turned and propagate_turning_point:
             self.propagate_turning_point(direction)
 
+    def grow(self):
+        self.next = SnakeBodySegment(
+            x=self.x,
+            y=self.y,
+            direction_x=self.direction_x,
+            direction_y=self.direction_y,
+            speed=self.speed,
+        )
+        self.next.previous = self
+        self.next.fix_segment_positions(self.x, self.y)
+
     def propagate_turning_point(self, direction, x=None, y=None):
         """
         Set to next body segment a Cartensian coordinate where it will turn to
@@ -157,20 +169,6 @@ class SnakeBodySegment(GameObject):
         x = x or self.x
         y = y or self.y
         self.next.turning_point = SnakeTurningPoint(x, y, direction)
-
-    def grow(self):
-        """
-        TODO
-        """
-        self.next = SnakeBodySegment(
-            x=self.x,
-            y=self.y,
-            direction_x=self.direction_x,
-            direction_y=self.direction_y,
-            speed=self.speed,
-        )
-        self.next.previous = self
-        self.next.fix_segment_positions(self.x, self.y)
 
     def check_turning_point(self):
         """

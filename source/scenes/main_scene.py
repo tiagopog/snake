@@ -1,25 +1,28 @@
 import arcade
 
-from source.game import Game, Scene
+from source.game import Scene
 from source.arena import Arena
 from source.score import Score
 from source.snake import Snake
 from source.food import Food
 
+GAME_OVER_TEXT = "GAME OVER!"
+
 
 class MainScene(Scene):
-    def setup(self, parent):
-        self.game = Game()
-        self.snake = Snake()
-        self.arena = Arena(parent=parent)
-        self.score = Score(parent=parent)
-        self.food = Food(parent=parent)
+    """
+    Manipulates and draws all the game objects related to the game's main scene
+    i.e. the snake character trying to get the food.
+    """
 
-    def draw(self):
-        self.arena.draw()
-        self.score.draw(score=self.game.score)
-        self.food.draw()
-        self.snake.draw()
+    def setup(self, game, window):
+        self.game = game
+        self.window = window
+
+        self.snake = Snake()
+        self.arena = Arena(window=window)
+        self.score = Score(window=window)
+        self.food = Food(window=window)
 
     def on_key_press(self, key, _modifiers):
         if key == arcade.key.UP:
@@ -32,16 +35,16 @@ class MainScene(Scene):
             self.snake.turn_right()
 
     def on_collision(self, obj):
-        """
-        Called when the snake collides against other `obj` in the game.
-        """
         if isinstance(obj, Food):
             self.snake.grow()
             self.food.reset_position()
         else:
-            raise "Gave over!"
+            self.game.set_game_over()
 
     def update(self, _delta_time):
+        if self.game.game_over:
+            return
+
         self.snake.move()
         self.game.check_collision_between(
             source=self.snake.head,
@@ -51,3 +54,17 @@ class MainScene(Scene):
 
     def on_key_release(self, key, modifiers):
         pass
+
+    def draw(self):
+        self.arena.draw()
+        self.score.draw(score=self.game.score)
+        self.food.draw()
+        self.snake.draw()
+
+        if self.game.game_over:
+            arcade.draw_text(
+                text=GAME_OVER_TEXT,
+                start_x=self.window.width / 2 - 30,
+                start_y=self.window.height / 2,
+                color=arcade.color.WHITE,
+            )

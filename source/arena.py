@@ -5,7 +5,7 @@ from .game import GameObject
 
 class ArenaBorder(GameObject):
     """
-    TODO
+    Represents a border in the game arena.
     """
 
     def draw(self):
@@ -14,48 +14,48 @@ class ArenaBorder(GameObject):
             height=self.height,
             center_x=self.x,
             center_y=self.y,
-            color=arcade.color.GRAY,
+            color=arcade.color.WHITE,
         ).draw()
 
 
 class Arena(GameObject):
     """
-    TODO
+    Defines the arena boundaries through the usage of `ArenaBorder` objects.
     """
 
     BORDER_SIZE = 15
 
-    def __init__(self, parent):
+    def __init__(self, window):
         super().__init__()
 
-        self.width = parent.width - 2 * self.BORDER_SIZE
-        self.height = parent.height - 2 * self.BORDER_SIZE
+        self.width = window.width - 2 * self.BORDER_SIZE
+        self.height = window.height - 2 * self.BORDER_SIZE
 
         self.left_border = ArenaBorder(
             x=self.BORDER_SIZE / 2,
-            y=parent.height / 2,
+            y=window.height / 2,
             width=self.BORDER_SIZE,
-            height=parent.height,
+            height=window.height,
         )
 
         self.right_border = ArenaBorder(
-            x=parent.width - self.BORDER_SIZE / 2,
-            y=parent.height / 2,
+            x=window.width - self.BORDER_SIZE / 2,
+            y=window.height / 2,
             width=self.BORDER_SIZE,
-            height=parent.height,
+            height=window.height,
         )
 
         self.top_border = ArenaBorder(
-            x=parent.width / 2,
-            y=parent.height - self.BORDER_SIZE / 2,
-            width=parent.width,
+            x=window.width / 2,
+            y=window.height - self.BORDER_SIZE / 2,
+            width=window.width,
             height=self.BORDER_SIZE,
         )
 
         self.bottom_border = ArenaBorder(
-            x=parent.width / 2,
+            x=window.width / 2,
             y=self.BORDER_SIZE / 2,
-            width=parent.width,
+            width=window.width,
             height=self.BORDER_SIZE,
         )
 

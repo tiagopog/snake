@@ -7,18 +7,18 @@ from .arena import Arena
 
 class Food(GameObject):
     """
-    TODO
+    Represents the food game object that the snake character tries to grab.
     """
 
     BODY_SIZE = 10
 
-    def __init__(self, parent):
+    def __init__(self, window):
         super().__init__(width=self.BODY_SIZE, height=self.BODY_SIZE)
         self.min_x = Arena.BORDER_SIZE + self.BODY_SIZE / 2
-        self.max_x = parent.width - Arena.BORDER_SIZE - self.BODY_SIZE / 2
+        self.max_x = window.width - Arena.BORDER_SIZE - self.BODY_SIZE / 2
 
         self.min_y = Arena.BORDER_SIZE + self.BODY_SIZE / 2
-        self.max_y = parent.height - Arena.BORDER_SIZE - self.BODY_SIZE / 2
+        self.max_y = window.height - Arena.BORDER_SIZE - self.BODY_SIZE / 2
 
         self.reset_position()
 

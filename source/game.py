@@ -55,12 +55,6 @@ class Scene:
         """
         raise NotImplementedError
 
-    def draw(self):
-        """
-        Render the scene screen.
-        """
-        raise NotImplementedError
-
     def on_key_press(self, key, modifiers):
         """
         Called whenever a key is pressed.
@@ -79,25 +73,32 @@ class Scene:
         """
         raise NotImplementedError
 
+    def draw(self):
+        """
+        Render the scene screen.
+        """
+        raise NotImplementedError
+
 
 class Game:
     """
-    TODO
+    Holds the main logic of the game the can be shared among scenes.
     """
 
     def __init__(self):
+        self.reset()
+
+    def reset(self):
         self.score = 0
+        self.game_over = False
+
+    def set_game_over(self):
+        self.game_over = True
 
     def increase_score(self):
-        """
-        TODO
-        """
         self.score += 1
 
     def check_collision_between(self, source, targets, on_collision):
-        """
-        TODO
-        """
         has_collision, obj = self.has_collision_between(source, targets)
 
         if has_collision:
@@ -105,9 +106,6 @@ class Game:
             on_collision(obj)
 
     def has_collision_between(self, source, targets):
-        """
-        Helper function to check the overlap between rectangular areas.
-        """
         result = (False, None)
 
         for target in targets:

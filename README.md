@@ -1,6 +1,39 @@
 # Snake
 
-I can't think on a better language to implment a snake game than Python (:snake:).
+A Python implementation of the classic (:snake:) game.
+
+That's my first attempt on writing games in Python after releasing
+some 2D games in Ruby like [Pong](https://github.com/tiagopog/pong)
+and [Flappy Bird](https://github.com/tiagopog/flappy_bird).
+
+As I did in the previous games I tried to use as little as possible
+the tools available in the game framework I'm using (i.e. [Arcade](https://github.com/pythonarcade/arcade))
+in favor of keep learning and forming a strong foundation in game development basics.
+Particullarly, in this game my goal was not only experiment game development in Python
+but also to to wrap my head around how to structure scenes in 2D games which is something
+I haven't done in other games so far.
+
+# Installation
+
+Install the awesome [Arcade](https://github.com/pythonarcade/arcade) library:
+
+```
+pip install arcade
+```
+
+Clone this repo:
+
+```
+git clone https://github.com/tiagopog/snake
+```
+
+Run the game:
+
+```
+python snake/main.py
+```
+
+Enjoy!
 
 # TODOs
 
@@ -13,6 +46,7 @@ I can't think on a better language to implment a snake game than Python (:snake:
 - [X] Make sure the food doesn't appear over or beyond the arena's border;
 - [X] Detect collision between the snake and the arena's boundaries;
 - [X] Detect collision between the snake and its own body;
-- [ ] Implement game over scene;
+- [X] Implement game over scene;
+- [ ] Implement game reset;
 - [ ] Implement scoreboard with best scores.
 - [ ] Generate a binary executable for the game.

@@ -5,14 +5,14 @@ from .game import GameObject
 
 class Score(GameObject):
     """
-    TODO
+    Represents the game score presented at screen's upper border.
     """
 
     SCORE_TEXT = "SCORE: {}"
 
-    def __init__(self, parent):
-        x = parent.width / 2 - 30
-        y = parent.height - 16
+    def __init__(self, window):
+        x = window.width / 2 - 30
+        y = window.height - 16
         super().__init__(x, y)
 
     def draw(self, score):
