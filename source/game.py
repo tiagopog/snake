@@ -90,10 +90,10 @@ class Game:
 
     def reset(self):
         self.score = 0
-        self.game_over = False
+        self.over = False
 
     def set_game_over(self):
-        self.game_over = True
+        self.over = True
 
     def increase_score(self):
         self.score += 1

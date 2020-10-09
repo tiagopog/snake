@@ -42,7 +42,7 @@ class MainScene(Scene):
             self.game.set_game_over()
 
     def update(self, _delta_time):
-        if self.game.game_over:
+        if self.game.over:
             return
 
         self.snake.move()
@@ -61,7 +61,7 @@ class MainScene(Scene):
         self.food.draw()
         self.snake.draw()
 
-        if self.game.game_over:
+        if self.game.over:
             arcade.draw_text(
                 text=GAME_OVER_TEXT,
                 start_x=self.window.width / 2 - 30,
