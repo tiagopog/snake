@@ -12,9 +12,9 @@ and [Flappy Bird](https://github.com/tiagopog/flappy_bird).
 
 As I did in the previous games I tried to use as little as possible
 the tools available in the game framework I'm using (i.e. [Arcade](https://github.com/pythonarcade/arcade))
-in favor of keep learning and forming a strong foundation in game development basics.
-Particullarly, in this game my goal was not only experiment game development in Python
-but also to to wrap my head around how to structure scenes in 2D games which is something
+in favor of learning and forming a solid foundation in game development basics.
+Particullarly, in this game my goal was not only to experiment game development in Python
+but also to wrap my head around how to start structuring scenes in 2D games which is something
 I haven't done in other games so far.
 
 # Installation
@@ -50,7 +50,7 @@ Enjoy!
 - [X] Make sure the food doesn't appear over or beyond the arena's border;
 - [X] Detect collision between the snake and the arena's boundaries;
 - [X] Detect collision between the snake and its own body;
-- [X] Implement game over scene;
+- [X] Implement game over;
 - [ ] Implement game reset;
 - [ ] Implement scoreboard with best scores.
 - [ ] Generate a binary executable for the game.
